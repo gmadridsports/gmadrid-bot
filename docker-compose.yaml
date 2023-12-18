@@ -1,0 +1,10 @@
+# docker compose to run the dev/builder.Dockerfile
+version: '3.7'
+services:
+  builder:
+    build:
+      context: .
+      dockerfile: dev/builder.Dockerfile
+    volumes:
+      - .:/app
+    command: /bin/bash -c "yarn install && yarn dev"
