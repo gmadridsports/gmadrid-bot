@@ -5,6 +5,10 @@ services:
     build:
       context: .
       dockerfile: dev/builder.Dockerfile
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/credentials.json
+      - SUPABASE_URL=https://<supabase_url>.supabase.co
+      - SUPABASE_KEY=<supabase_key>
     volumes:
       - .:/app
     command: /bin/bash -c "yarn install && yarn dev"

@@ -1,5 +1,5 @@
-import { Client, Location, Poll, List, Buttons, LocalAuth } from 'whatsapp-web.js';
-import qrcode from 'qrcode-terminal';
+// import { Client, Location, Poll, List, Buttons, LocalAuth } from 'whatsapp-web.js';
+// import qrcode from 'qrcode-terminal';
 const addition = (a: number, b: number): number => {
   return a + b + 1 + 4;
 };
