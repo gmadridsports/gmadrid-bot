@@ -1,7 +1,11 @@
 services:
+  BulletinBoard.infrastructure.WhatsappMessageRepositoryConfig:
+    factory:
+      class: '../../../../Contexts/BulletinBoard/infrastructure/whatsapp/WhatsappMessageRepositoryConfigFactory'
+      method: 'createConfig'
   Notifications.domain.MessagesRepository:
-    class: ../../../../Contexts/BulletinBoard/infrastructure/WhatsappMessageRepository.ts
-    arguments: ['@Shared.domain.EventBus']
+    class: ../../../../Contexts/BulletinBoard/infrastructure/whatsapp/WhatsappMessageRepository.ts
+    arguments: ['@Shared.domain.EventBus', '@BulletinBoard.infrastructure.WhatsappMessageRepositoryConfig']
   Notifications.application.FetchAndPublishNewNotices:
     class: ../../../../Contexts/BulletinBoard/application/FetchAndPublishNewNotices.ts
     arguments: ['@Notifications.domain.MessagesRepository']

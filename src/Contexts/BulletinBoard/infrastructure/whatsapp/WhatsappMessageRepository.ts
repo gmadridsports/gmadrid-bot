@@ -1,20 +1,19 @@
-import { MessagesRepository } from '../domain/MessagesRepository';
-import Message from '../domain/Message';
+import { MessagesRepository } from '../../domain/MessagesRepository';
+import Message from '../../domain/Message';
 import { Client, LocalAuth } from 'whatsapp-web.js';
 import qrcode from 'qrcode-terminal';
 
-import { EventBus } from '../../Shared/domain/EventBus';
-import { MessageReceivedDomainEvent } from '../domain/MessageReceivedDomainEvent';
+import { EventBus } from '../../../Shared/domain/EventBus';
+import { MessageReceivedDomainEvent } from '../../domain/MessageReceivedDomainEvent';
+import { WhatsappMessageRepositoryConfig } from './WhatsappMessageRepositoryConfig';
 
 class WhatsappMessageRepository implements MessagesRepository {
-  private eventBus: EventBus;
-
-  constructor(eventBus: EventBus) {
-    this.eventBus = eventBus;
-  }
+  constructor(
+    private eventBus: EventBus,
+    private config: WhatsappMessageRepositoryConfig,
+  ) {}
 
   async publishNewMessages(): Promise<Message[]> {
-    // todo implement this
     return new Promise(() => {
       const client = new Client({
         authStrategy: new LocalAuth(),
@@ -41,8 +40,7 @@ class WhatsappMessageRepository implements MessagesRepository {
       });
 
       client.on('ready', async () => {
-        // todo chat id via vars
-        const chat = await client.getChatById('34638782987-1599067857@g.us');
+        const chat = await client.getChatById(this.config.chatId);
         const messages = await chat.fetchMessages({ limit: 10 });
         const newMessagesEvents = messages.map(
           (msg) =>
