@@ -1,0 +1,16 @@
+services:
+  Notifications.domain.MessagesRepository:
+    class: ../../../../Contexts/BulletinBoard/infrastructure/WhatsappMessageRepository.ts
+    arguments: [ "@Shared.domain.EventBus" ]
+  Notifications.application.FetchAndPublishNewNotices:
+    class: ../../../../Contexts/BulletinBoard/application/FetchAndPublishNewNotices.ts
+    arguments: [ "@Notifications.domain.MessagesRepository" ]
+  BulletinBoard.application.CreateNotice:
+    class: ../../../../Contexts/BulletinBoard/application/Create/CreateNotice.ts
+    arguments: []
+
+  BulletinBoard.application.CreateANoticeOnMessageReceived:
+    class: ../../../../Contexts/BulletinBoard/application/Create/CreateANoticeOnMessageReceived.ts
+    arguments: [ "@BulletinBoard.application.CreateNotice" ]
+    tags:
+      - { name: 'domainEventSubscriber' }

@@ -2,6 +2,8 @@
 version: '3.7'
 services:
   builder:
+    security_opt:
+      - seccomp:dev/chrome.json
     build:
       context: .
       dockerfile: dev/builder.Dockerfile
@@ -11,4 +13,3 @@ services:
       - SUPABASE_KEY=<supabase_key>
     volumes:
       - .:/app
-    command: /bin/bash -c "yarn install && yarn dev"
