@@ -4,7 +4,7 @@ import { Client, LocalAuth } from 'whatsapp-web.js';
 import qrcode from 'qrcode-terminal';
 
 import { EventBus } from '../../../Shared/domain/EventBus';
-import { MessageReceivedDomainEvent } from '../../domain/MessageReceivedDomainEvent';
+import { WhatsappMessageReceivedDomainEvent } from '../../domain/WhatsappMessageReceivedDomainEvent';
 import { WhatsappMessageRepositoryConfig } from './WhatsappMessageRepositoryConfig';
 
 class WhatsappMessageRepository implements MessagesRepository {
@@ -16,7 +16,7 @@ class WhatsappMessageRepository implements MessagesRepository {
   async publishNewMessages(): Promise<Message[]> {
     return new Promise(() => {
       const client = new Client({
-        authStrategy: new LocalAuth(),
+        authStrategy: new LocalAuth({ dataPath: '/usr/src/app/data' }),
         puppeteer: {
           headless: true,
           executablePath: '/usr/bin/chromium',
@@ -42,23 +42,27 @@ class WhatsappMessageRepository implements MessagesRepository {
       client.on('ready', async () => {
         const chat = await client.getChatById(this.config.chatId);
         const messages = await chat.fetchMessages({ limit: 10 });
-        const newMessagesEvents = messages.map(
-          (msg) =>
-            new MessageReceivedDomainEvent({
-              fromChannel: 'whatsapp',
-              id: msg.id.id,
-              body: msg.body,
-            }),
-        );
+        const newMessagesEvents = messages
+          .filter((msg) => msg.type === 'chat')
+          .map(
+            (msg) =>
+              new WhatsappMessageReceivedDomainEvent({
+                jsonRawData: JSON.stringify(msg.rawData),
+                messageId: msg.id.id,
+                body: msg.body,
+              }),
+          );
 
         this.eventBus.publish(newMessagesEvents);
       });
 
       client.on('message', (msg) => {
+        if (msg.type !== 'chat' || msg.fromMe) return;
+
         this.eventBus.publish([
-          new MessageReceivedDomainEvent({
-            fromChannel: 'whatsapp',
-            id: msg.id.id,
+          new WhatsappMessageReceivedDomainEvent({
+            jsonRawData: JSON.stringify(msg.rawData),
+            messageId: msg.id.id,
             body: msg.body,
           }),
         ]);

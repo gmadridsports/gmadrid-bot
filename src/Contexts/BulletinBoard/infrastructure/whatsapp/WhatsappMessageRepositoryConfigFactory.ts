@@ -3,9 +3,8 @@ import { WhatsappMessageRepositoryConfig } from './WhatsappMessageRepositoryConf
 
 export class WhatsappMessageRepositoryConfigFactory {
   static createConfig(): WhatsappMessageRepositoryConfig {
-    console.log('FACTORY CALLED');
     return {
-      chatId: config.get('whatsappChannelId'),
+      chatId: config.get('whatsapp.channelId'),
     };
   }
 }

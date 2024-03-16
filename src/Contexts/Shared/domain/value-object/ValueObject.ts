@@ -1,4 +1,5 @@
-type Primitives = string | number | boolean | Date;
+export type PrimitivesBag = { [key: string]: string | number | boolean | Date | PrimitivesBag };
+type Primitives = string | number | boolean | Date | PrimitivesBag;
 
 export abstract class ValueObject<T extends Primitives> {
   readonly value: T;

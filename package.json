@@ -11,6 +11,7 @@
   "author": "Matteo Bertamini <dev@bertamini.net>",
   "license": "AGPL-3.0-or-later",
   "dependencies": {
+    "@supabase/supabase-js": "^2.39.8",
     "convict": "^6.2.4",
     "node-dependency-injection": "^3.1.2",
     "qrcode-terminal": "^0.12.0",

@@ -7,17 +7,27 @@ const notificationsConfig = convict({
     default: 'development',
     env: 'NODE_ENV',
   },
-  supabaseUrl: {
-    doc: 'The Supabase URL.',
-    format: String,
-    default: 'http://localhost:8000',
-    env: 'SUPABASE_URL',
+  supabase: {
+    url: {
+      doc: 'The Supabase URL.',
+      format: String,
+      default: 'http://127.0.0.1:54321',
+      env: 'SUPABASE_URL',
+    },
+    key: {
+      doc: 'The Supabase key.',
+      format: String,
+      default: 'super-secret-jwt-token-with-at-least-32-characters-long',
+      env: 'SUPABASE_KEY',
+    },
   },
-  whatsappChannelId: {
-    doc: 'The WhatsApp channel ID to listen for the notices.',
-    format: String,
-    default: '34638782987-1599067857@g.us',
-    env: 'WHATSAPP_CHANNEL_ID',
+  whatsapp: {
+    channelId: {
+      doc: 'The WhatsApp channel ID to listen for the notices.',
+      format: String,
+      default: '34638782987-1599067857@g.us',
+      env: 'WHATSAPP_CHANNEL_ID',
+    },
   },
 });
 

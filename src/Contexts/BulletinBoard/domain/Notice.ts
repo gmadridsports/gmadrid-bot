@@ -1,25 +1,73 @@
 import { NoticeId } from './NoticeId';
-import { NoticeTitle } from './NoticeTitle';
+import { AggregateRoot } from '../../Shared/domain/AggregateRoot';
+import OriginSource from './OriginSource';
+import { NoticePublicationDate } from './NoticePublicationDate';
+import { NoticeIsPublished } from './NoticeIsPublished';
+import { NoticeSourceId } from './NoticeSourceId';
+import { RawJSONDataMessage } from './RawJSONDataMessage';
+import { NoticeBodyMessage } from './NoticeBodyMessage';
+import { NoticeCreatedDomainEvent } from './NoticeCreatedDomainEvent';
 
-class Notice {
+class Notice extends AggregateRoot {
   private readonly id: NoticeId;
-  private originSource: string;
-  private originSourceId?: string;
-  private title: NoticeTitle;
-  private message: string;
-  private type: string;
-  private publishingTime: number;
-  private validUntil?: number;
-  private published: boolean = false;
+  private readonly publicationDate: NoticePublicationDate;
+  private readonly isPublished: NoticeIsPublished;
+  private readonly sourceId: NoticeSourceId;
+  private readonly originSource: OriginSource;
+  private readonly bodyMessage: NoticeBodyMessage;
+  private readonly originalRawDataMessage: RawJSONDataMessage;
 
-  constructor(id: NoticeId, originSource: string, title: NoticeTitle, message: string, type: string, time: number, originSourceId?: string) {
+  constructor(
+    id: NoticeId,
+    originSource: OriginSource,
+    sourceId: NoticeSourceId,
+    isPublished: NoticeIsPublished,
+    body: NoticeBodyMessage,
+    publicationDate: NoticePublicationDate,
+    originalRawDataMessage: RawJSONDataMessage,
+  ) {
+    super();
     this.id = id;
     this.originSource = originSource;
-    this.originSourceId = originSourceId;
-    this.title = title;
-    this.message = message;
-    this.type = type;
-    this.publishingTime = time;
+    this.sourceId = sourceId;
+    this.isPublished = isPublished;
+    this.bodyMessage = body;
+    this.publicationDate = publicationDate;
+    this.originalRawDataMessage = originalRawDataMessage;
+  }
+
+  static create(
+    id: NoticeId,
+    originSource: OriginSource,
+    sourceId: NoticeSourceId,
+    isPublished: NoticeIsPublished,
+    body: NoticeBodyMessage,
+    publicationDate: NoticePublicationDate,
+    originalRawDataMessage: RawJSONDataMessage,
+  ): Notice {
+    const notice = new Notice(id, originSource, sourceId, isPublished, body, publicationDate, originalRawDataMessage);
+
+    notice.record(
+      new NoticeCreatedDomainEvent({
+        aggregateId: id.value,
+        body: body.value,
+      }),
+    );
+
+    return notice;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  toPrimitives(): any {
+    return {
+      id: this.id.value,
+      originSource: this.originSource.value,
+      isPublished: this.isPublished.value,
+      sourceId: this.sourceId.value,
+      bodyMessage: this.bodyMessage.value,
+      publicationDate: this.publicationDate.value,
+      originalRawDataMessage: this.originalRawDataMessage.value,
+    };
   }
 }
 

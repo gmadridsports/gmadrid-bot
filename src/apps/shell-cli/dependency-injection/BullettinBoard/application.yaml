@@ -3,15 +3,22 @@ services:
     factory:
       class: '../../../../Contexts/BulletinBoard/infrastructure/whatsapp/WhatsappMessageRepositoryConfigFactory'
       method: 'createConfig'
+  BulletinBoard.infrastructure.SupabaseNoticeRepositoryConfig:
+    factory:
+      class: '../../../../Contexts/BulletinBoard/infrastructure/supabase/SupabaseNoticeRepositoryConfigFactory'
+      method: 'createConfig'
   Notifications.domain.MessagesRepository:
     class: ../../../../Contexts/BulletinBoard/infrastructure/whatsapp/WhatsappMessageRepository.ts
     arguments: ['@Shared.domain.EventBus', '@BulletinBoard.infrastructure.WhatsappMessageRepositoryConfig']
   Notifications.application.FetchAndPublishNewNotices:
     class: ../../../../Contexts/BulletinBoard/application/FetchAndPublishNewNotices.ts
     arguments: ['@Notifications.domain.MessagesRepository']
+  BulletinBoard.infrastructure.NoticesRepository:
+    class: ../../../../Contexts/BulletinBoard/infrastructure/supabase/SupabaseNoticeRepository.ts
+    arguments: ['@BulletinBoard.infrastructure.SupabaseNoticeRepositoryConfig']
   BulletinBoard.application.CreateNotice:
     class: ../../../../Contexts/BulletinBoard/application/Create/CreateNotice.ts
-    arguments: []
+    arguments: ['@BulletinBoard.infrastructure.NoticesRepository', '@Shared.domain.EventBus']
 
   BulletinBoard.application.CreateANoticeOnMessageReceived:
     class: ../../../../Contexts/BulletinBoard/application/Create/CreateANoticeOnMessageReceived.ts
