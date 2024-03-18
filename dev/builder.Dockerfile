@@ -15,5 +15,4 @@ RUN \
     /var/tmp/* \
     /tmp/*
 
-# todo make it run with a different user than root
 WORKDIR /app

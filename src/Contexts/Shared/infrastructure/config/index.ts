@@ -3,8 +3,8 @@ import convict from 'convict';
 const notificationsConfig = convict({
   env: {
     doc: 'The application environment.',
-    format: ['production', 'development', 'test'],
-    default: 'development',
+    format: ['prod', 'dev', 'test'],
+    default: 'dev',
     env: 'NODE_ENV',
   },
   supabase: {

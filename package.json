@@ -5,6 +5,10 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --watch \"*.ts\" --exec \"ts-node\" ./src/apps/shell-cli/start.ts",
+    "start:bot:shell-cli": "NODE_ENV=prod node ./src/apps/shell-cli/start",
+    "build": "yarn build:clean && yarn build:tsc",
+    "build:tsc": "tsc -p tsconfig.json",
+    "build:clean": "rm -r dist; exit 0",
     "prepare": "husky install",
     "lint": "yarn eslint --ext .ts src && yarn prettier src -w"
   },

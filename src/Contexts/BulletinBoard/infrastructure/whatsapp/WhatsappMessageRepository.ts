@@ -56,8 +56,10 @@ class WhatsappMessageRepository implements MessagesRepository {
         this.eventBus.publish(newMessagesEvents);
       });
 
-      client.on('message', (msg) => {
+      client.on('message', async (msg) => {
         if (msg.type !== 'chat' || msg.fromMe) return;
+
+        if ((await msg.getChat()).id._serialized !== this.config.chatId) return;
 
         this.eventBus.publish([
           new WhatsappMessageReceivedDomainEvent({
