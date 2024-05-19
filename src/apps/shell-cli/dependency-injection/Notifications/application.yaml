@@ -1,23 +1,23 @@
 services:
   Notifications.domain.NotificationService:
     class: ../../../../Contexts/Notifications/infrastructure/FirebaseNotificationService
-    arguments: [ ]
+    arguments: []
   Notifications.domain.NotificationTokenRepository:
     class: ../../../../Contexts/Notifications/infrastructure/SupabaseNotificationTokenRepository
-    arguments: [ '@Shared.infrastructure.SupabaseRepositoryConfig' ,  '@Shared.domain.EventBus' ]
+    arguments: ['@Shared.infrastructure.SupabaseRepositoryConfig', '@Shared.domain.EventBus']
   Notifications.application.SendBulletinBoardNotification:
     class: ../../../../Contexts/Notifications/application/SendBulletinBoardNotification/SendBulletinBoardNotification
-    arguments: [ '@Notifications.domain.NotificationTokenRepository', '@Notifications.domain.NotificationService' ]
+    arguments: ['@Notifications.domain.NotificationTokenRepository', '@Notifications.domain.NotificationService']
   Notifications.application.SendNotificationOnBulletinNoticeCreated:
     class: ../../../../Contexts/Notifications/application/SendBulletinBoardNotification/SendNotificationOnBulletinNoticeCreated
-    arguments: [ '@Notifications.application.SendBulletinBoardNotification' ]
+    arguments: ['@Notifications.application.SendBulletinBoardNotification']
     tags:
       - { name: 'domainEventSubscriber' }
   Notifications.application.DeleteNotificationToken:
     class: ../../../../Contexts/Notifications/application/DeleteNotificationToken/DeleteNotificationToken
-    arguments: [ '@Notifications.domain.NotificationTokenRepository']
+    arguments: ['@Notifications.domain.NotificationTokenRepository']
   Notifications.application.DeleteNotificationTokenOnTokenExpired:
     class: ../../../../Contexts/Notifications/application/DeleteNotificationToken/DeleteNotificationTokenOnTokenExpired
-    arguments: [ '@Notifications.application.DeleteNotificationToken' ]
+    arguments: ['@Notifications.application.DeleteNotificationToken']
     tags:
       - { name: 'domainEventSubscriber' }
