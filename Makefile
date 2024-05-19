@@ -8,6 +8,9 @@ build:
 build-docker-image: build
 	@docker buildx build --platform linux/amd64 ./ -f ./dev/runner.Dockerfile --squash -t bertuz/gmadrid-natacion-bot
 	@echo "Docker image built successfully"
+build-docker-image-arm: build
+	@docker buildx build --platform linux/arm64 ./ -f ./dev/runner.Dockerfile --squash -t bertuz/gmadrid-natacion-bot
+	@echo "Docker image built successfully"
 push-docker-image: build-docker-image
 	@docker push bertuz/gmadrid-natacion-bot
 	@echo "Docker image pushed successfully"

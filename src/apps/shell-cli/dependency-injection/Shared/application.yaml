@@ -2,3 +2,7 @@ services:
   Shared.domain.EventBus:
     class: ../../../../Contexts/Shared/infrastructure/EventBus/InMemory/InMemoryAsyncEventBus
     arguments: ['']
+  Shared.infrastructure.SupabaseRepositoryConfig:
+    factory:
+      class: '../../../../Contexts/Shared/infrastructure/supabase/SupabaseRepositoryConfigFactory'
+      method: 'createConfig'

@@ -1,6 +1,8 @@
 FROM node:lts-iron
 
 RUN apt-get update && apt-get install yarn -y
+ENV GOOGLE_APPLICATION_CREDENTIALS="/usr/src/app/data/serviceAccountKey.json"
+ENV TZ="Europe/Madrid"
 RUN \
   echo "**** install packages ****" && \
   apt-get update && \

@@ -1,3 +1,4 @@
 imports:
   - { resource: ./Shared/application.yaml }
   - { resource: ./BullettinBoard/application.yaml }
+  - { resource: ./Notifications/application.yaml }

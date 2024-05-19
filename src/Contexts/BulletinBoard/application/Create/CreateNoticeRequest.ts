@@ -1,7 +1,7 @@
 import { NoticeSourceId } from '../../domain/NoticeSourceId';
-import OriginSource from '../../domain/OriginSource';
+import OriginSource from '../../domain/OriginSource/OriginSource';
 import { RawJSONDataMessage } from '../../domain/RawJSONDataMessage';
-import { NoticeBodyMessage } from '../../domain/NoticeBodyMessage';
+import { NoticeBodyMessage } from '../../domain/NoticeBodyMessage/NoticeBodyMessage';
 import { NoticePublicationDate } from '../../domain/NoticePublicationDate';
 
 export interface CreateNoticeRequest {

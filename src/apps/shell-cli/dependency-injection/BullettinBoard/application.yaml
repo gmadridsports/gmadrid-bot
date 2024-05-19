@@ -3,25 +3,25 @@ services:
     factory:
       class: '../../../../Contexts/BulletinBoard/infrastructure/whatsapp/WhatsappMessageRepositoryConfigFactory'
       method: 'createConfig'
-  BulletinBoard.infrastructure.SupabaseNoticeRepositoryConfig:
-    factory:
-      class: '../../../../Contexts/BulletinBoard/infrastructure/supabase/SupabaseNoticeRepositoryConfigFactory'
-      method: 'createConfig'
-  Notifications.domain.MessagesRepository:
+  BulletinBoard.domain.MessagesRepository:
     class: ../../../../Contexts/BulletinBoard/infrastructure/whatsapp/WhatsappMessageRepository
-    arguments: ['@Shared.domain.EventBus', '@BulletinBoard.infrastructure.WhatsappMessageRepositoryConfig']
-  Notifications.application.FetchAndPublishNewNotices:
+    arguments: [ '@Shared.domain.EventBus', '@BulletinBoard.infrastructure.WhatsappMessageRepositoryConfig' ]
+  BulletinBoard.application.FetchAndPublishNewNotices:
     class: ../../../../Contexts/BulletinBoard/application/FetchAndPublishNewNotices
-    arguments: ['@Notifications.domain.MessagesRepository']
+    arguments: [ '@BulletinBoard.domain.MessagesRepository' ]
   BulletinBoard.infrastructure.NoticesRepository:
     class: ../../../../Contexts/BulletinBoard/infrastructure/supabase/SupabaseNoticeRepository
-    arguments: ['@BulletinBoard.infrastructure.SupabaseNoticeRepositoryConfig']
+    arguments: [ '@Shared.infrastructure.SupabaseRepositoryConfig' ]
   BulletinBoard.application.CreateNotice:
     class: ../../../../Contexts/BulletinBoard/application/Create/CreateNotice
-    arguments: ['@BulletinBoard.infrastructure.NoticesRepository', '@Shared.domain.EventBus']
+    arguments: [ '@BulletinBoard.infrastructure.NoticesRepository', '@Shared.domain.EventBus' ]
 
   BulletinBoard.application.CreateANoticeOnMessageReceived:
     class: ../../../../Contexts/BulletinBoard/application/Create/CreateANoticeOnMessageReceived
-    arguments: ['@BulletinBoard.application.CreateNotice']
+    arguments: [ '@BulletinBoard.application.CreateNotice' ]
+    tags:
+      - { name: 'domainEventSubscriber' }
+  BulletinBoard.application.LogCreatedNotice:
+    class: ../../../../Contexts/BulletinBoard/application/LogCreateNotice/LogNoticeOnNoticeCreated
     tags:
       - { name: 'domainEventSubscriber' }

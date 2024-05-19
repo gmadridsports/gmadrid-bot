@@ -29,6 +29,14 @@ const notificationsConfig = convict({
       env: 'WHATSAPP_CHANNEL_ID',
     },
   },
+  firebase: {
+    key: {
+      doc: 'Firebase key path to access the push notifications',
+      format: String,
+      default: '',
+      env: 'GOOGLE_APPLICATION_CREDENTIALS_PATH',
+    },
+  },
 });
 
 notificationsConfig.loadFile([`${__dirname}/default.json`, `${__dirname}/${notificationsConfig.get('env')}.json`]);

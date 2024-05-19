@@ -16,6 +16,10 @@ class WhatsappMessageRepository implements MessagesRepository {
   async publishNewMessages(): Promise<Message[]> {
     return new Promise(() => {
       const client = new Client({
+        webVersionCache: {
+          type: 'remote',
+          remotePath: 'https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/2.2412.54.html',
+        },
         authStrategy: new LocalAuth({ dataPath: '/usr/src/app/data' }),
         puppeteer: {
           headless: true,

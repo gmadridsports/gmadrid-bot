@@ -1,17 +1,27 @@
 import { createClient } from '@supabase/supabase-js';
 import { NoticeRepository } from '../../domain/NoticeRepository';
 import Notice from '../../domain/Notice';
-import { SupabaseNoticeRepositoryConfig } from './SupabaseNoticeRepositoryConfig';
+import { SupabaseRepositoryConfig } from '../../../Shared/infrastructure/supabase/SupabaseRepositoryConfig';
 
 class SupabaseNoticeRepository implements NoticeRepository {
-  constructor(private config: SupabaseNoticeRepositoryConfig) {}
+  constructor(private config: SupabaseRepositoryConfig) {}
 
   async save(notice: Notice): Promise<void> {
     const supabase = createClient(this.config.url, this.config.key);
 
     const noticeToSave = notice.toPrimitives();
+    const options: Intl.DateTimeFormatOptions = {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false,
+    };
+    const publicationDate = noticeToSave.publicationDate.toLocaleString('en-US', options).replace(/,/g, '');
     const valuesToWrite = {
-      publication_date: noticeToSave.publicationDate,
+      publication_date: publicationDate,
       is_published: noticeToSave.isPublished,
       source_id: noticeToSave.sourceId,
       origin_source: noticeToSave.originSource,

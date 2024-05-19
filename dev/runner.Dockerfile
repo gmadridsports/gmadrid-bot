@@ -7,6 +7,9 @@ ADD ./dist /app/
 ADD ./src/apps/shell-cli/dependency-injection /app/src/apps/shell-cli/dependency-injection/
 ADD ./src/Contexts/Shared/infrastructure/config/*.json /app/src/Contexts/Shared/infrastructure/config/
 
+ENV TZ="Europe/Madrid"
+ENV GOOGLE_APPLICATION_CREDENTIALS="/usr/src/app/data/serviceAccountKey.json"
+
 RUN apt-get update && apt-get install yarn -y && \
   echo "**** install packages ****" && \
   apt-get update && \

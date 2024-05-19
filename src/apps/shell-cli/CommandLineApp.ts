@@ -4,11 +4,10 @@ import di from './dependency-injection/index';
 
 class CommandLineApp {
   async start() {
-    console.log('Executing the command line app...');
     const container = await di();
     await this.configureEventBus();
 
-    const fetchAndPublishNewNotices: FetchAndPublishNewNotices = container.get('Notifications.application.FetchAndPublishNewNotices');
+    const fetchAndPublishNewNotices: FetchAndPublishNewNotices = container.get('BulletinBoard.application.FetchAndPublishNewNotices');
     await fetchAndPublishNewNotices.run();
   }
 

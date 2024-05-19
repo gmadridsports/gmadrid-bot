@@ -1,11 +1,11 @@
 import { NoticeId } from './NoticeId';
 import { AggregateRoot } from '../../Shared/domain/AggregateRoot';
-import OriginSource from './OriginSource';
+import OriginSource from './OriginSource/OriginSource';
 import { NoticePublicationDate } from './NoticePublicationDate';
 import { NoticeIsPublished } from './NoticeIsPublished';
 import { NoticeSourceId } from './NoticeSourceId';
 import { RawJSONDataMessage } from './RawJSONDataMessage';
-import { NoticeBodyMessage } from './NoticeBodyMessage';
+import { NoticeBodyMessage } from './NoticeBodyMessage/NoticeBodyMessage';
 import { NoticeCreatedDomainEvent } from './NoticeCreatedDomainEvent';
 
 class Notice extends AggregateRoot {
