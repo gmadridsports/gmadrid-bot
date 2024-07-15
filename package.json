@@ -23,7 +23,7 @@
     "typescript": "^5.3.3",
     "uuid": "^9.0.1",
     "uuid-validate": "^0.0.3",
-    "whatsapp-web.js": "^1.16.4-alpha.0"
+    "whatsapp-web.js": "github:pedroslopez/whatsapp-web.js#webpack-exodus"
   },
   "overrides": {
     "puppeteer": {

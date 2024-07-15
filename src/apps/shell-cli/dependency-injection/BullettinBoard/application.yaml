@@ -15,7 +15,15 @@ services:
   BulletinBoard.application.CreateNotice:
     class: ../../../../Contexts/BulletinBoard/application/Create/CreateNotice
     arguments: ['@BulletinBoard.infrastructure.NoticesRepository', '@Shared.domain.EventBus']
+  BulletinBoard.application.CreatePastNotice:
+    class: ../../../../Contexts/BulletinBoard/application/Create/CreatePastNotice
+    arguments: ['@BulletinBoard.infrastructure.NoticesRepository', '@Shared.domain.EventBus']
 
+  BulletinBoard.application.CreateAPastNoticeOnMessageFetched:
+    class: ../../../../Contexts/BulletinBoard/application/Create/CreateAPastNoticeOnMessageFetched
+    arguments: ['@BulletinBoard.application.CreatePastNotice']
+    tags:
+      - { name: 'domainEventSubscriber' }
   BulletinBoard.application.CreateANoticeOnMessageReceived:
     class: ../../../../Contexts/BulletinBoard/application/Create/CreateANoticeOnMessageReceived
     arguments: ['@BulletinBoard.application.CreateNotice']

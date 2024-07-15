@@ -1,5 +1,5 @@
-import Message from './Message';
+import { NumMessagesToFetch } from './NumMessagesToFetch';
 
 export interface MessagesRepository {
-  publishNewMessages(): Promise<Message[]>;
+  publishNewMessages(previousQuantity?: NumMessagesToFetch): void;
 }

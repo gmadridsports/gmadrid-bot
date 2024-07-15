@@ -11,13 +11,14 @@ class SupabaseNoticeRepository implements NoticeRepository {
 
     const noticeToSave = notice.toPrimitives();
     const options: Intl.DateTimeFormatOptions = {
+      hourCycle: 'h23',
       year: 'numeric',
       month: '2-digit',
       day: '2-digit',
       hour: '2-digit',
       minute: '2-digit',
       second: '2-digit',
-      hour12: false,
+      // hour12: false,
     };
     const publicationDate = noticeToSave.publicationDate.toLocaleString('en-US', options).replace(/,/g, '');
     const valuesToWrite = {
@@ -28,7 +29,6 @@ class SupabaseNoticeRepository implements NoticeRepository {
       body_message: noticeToSave.bodyMessage,
       original_raw_data_message: noticeToSave.originalRawDataMessage,
     };
-
     const { data, error: readingError } = await supabase
       .from('bulletin_board')
       .select('id')
@@ -36,6 +36,7 @@ class SupabaseNoticeRepository implements NoticeRepository {
       .eq('source_id', noticeToSave.sourceId);
 
     if (readingError) {
+      console.error(readingError);
       throw new Error(readingError.message);
       return;
     }

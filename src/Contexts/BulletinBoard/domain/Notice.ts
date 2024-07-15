@@ -7,6 +7,7 @@ import { NoticeSourceId } from './NoticeSourceId';
 import { RawJSONDataMessage } from './RawJSONDataMessage';
 import { NoticeBodyMessage } from './NoticeBodyMessage/NoticeBodyMessage';
 import { NoticeCreatedDomainEvent } from './NoticeCreatedDomainEvent';
+import { PastNoticeCreatedDomainEvent } from './PastNoticeCreatedDomainEvent';
 
 class Notice extends AggregateRoot {
   private readonly id: NoticeId;
@@ -49,6 +50,27 @@ class Notice extends AggregateRoot {
 
     notice.record(
       new NoticeCreatedDomainEvent({
+        aggregateId: id.value,
+        body: body.value,
+      }),
+    );
+
+    return notice;
+  }
+
+  static createPastNotice(
+    id: NoticeId,
+    originSource: OriginSource,
+    sourceId: NoticeSourceId,
+    isPublished: NoticeIsPublished,
+    body: NoticeBodyMessage,
+    publicationDate: NoticePublicationDate,
+    originalRawDataMessage: RawJSONDataMessage,
+  ): Notice {
+    const notice = new Notice(id, originSource, sourceId, isPublished, body, publicationDate, originalRawDataMessage);
+
+    notice.record(
+      new PastNoticeCreatedDomainEvent({
         aggregateId: id.value,
         body: body.value,
       }),

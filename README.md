@@ -26,6 +26,8 @@ Apparently the app needs VirtioFS. If you experience some error about `fsstat` t
 
 You'll probably have to set some environment variable you can find in the `.env` file. That file won't be tracked by git.
 
+`make dev` accepts the env variable `numMessagesToFetch`.
+
 ## Dev Op
 Just run the docker image with the following command:
 ```bash
@@ -33,8 +35,19 @@ docker run -d \
  --name "gmadrid-bot" \
  --env-file ./.env \
  --mount type=bind,source="$(pwd)/serviceAccountKey.json",target=/usr/src/app/data/serviceAccountKey.json \
- bertuz/gmadrid-natacion-bot
+ bertuz/gmadrid-natacion-bot 
 ```
+
+In case you wanna fetch some initial message (first run on a server with an empty DB, for instance), explicit the `--numMessageToFetch` with defaults to 0:
+
+```bash
+docker run -d \
+ --name "gmadrid-bot" \
+ --env-file ./.env \
+ --mount type=bind,source="$(pwd)/serviceAccountKey.json",target=/usr/src/app/data/serviceAccountKey.json \
+ bertuz/gmadrid-natacion-bot --numMessagesToFetch 19
+```
+
 ### Volumes and bind mounts
 To make it work, the app uses:
 - a volume to keep persistence of the whatsapp connection. This way, you won't have to rescan the QR code every time you restart the container.

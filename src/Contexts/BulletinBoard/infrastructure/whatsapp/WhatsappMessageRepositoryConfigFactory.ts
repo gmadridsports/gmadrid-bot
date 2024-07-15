@@ -5,6 +5,7 @@ export class WhatsappMessageRepositoryConfigFactory {
   static createConfig(): WhatsappMessageRepositoryConfig {
     return {
       chatId: config.get('whatsapp.channelId'),
+      pageUrl: config.get('whatsapp.pageUrl'),
     };
   }
 }

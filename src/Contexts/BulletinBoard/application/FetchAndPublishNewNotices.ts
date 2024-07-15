@@ -1,4 +1,5 @@
 import { MessagesRepository } from '../domain/MessagesRepository';
+import { NumMessagesToFetch } from '../domain/NumMessagesToFetch';
 
 class FetchAndPublishNewNotices {
   private readonly messagesRepository: MessagesRepository;
@@ -7,9 +8,9 @@ class FetchAndPublishNewNotices {
     this.messagesRepository = messagesRepository;
   }
 
-  async run(): Promise<void> {
+  async run(previousMessagesToFetch?: NumMessagesToFetch): Promise<void> {
     console.log('fetching the new messages...');
-    this.messagesRepository.publishNewMessages();
+    this.messagesRepository.publishNewMessages(previousMessagesToFetch);
 
     return Promise.resolve();
   }

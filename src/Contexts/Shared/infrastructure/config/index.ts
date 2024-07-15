@@ -28,6 +28,12 @@ const notificationsConfig = convict({
       default: '34638782987-1599067857@g.us',
       env: 'WHATSAPP_CHANNEL_ID',
     },
+    pageUrl: {
+      doc: 'The WhatsApp page url to load the QR code.',
+      format: String,
+      default: 'https://github.com/wppconnect-team/wa-version/blob/main/html/2.3000.1014801647-alpha.html',
+      env: 'WHATSAPP_PAGE_URL',
+    },
   },
   firebase: {
     key: {
@@ -38,6 +44,6 @@ const notificationsConfig = convict({
     },
   },
 });
-
+console.log(`${__dirname}/${notificationsConfig.get('env')}.json`);
 notificationsConfig.loadFile([`${__dirname}/default.json`, `${__dirname}/${notificationsConfig.get('env')}.json`]);
 export default notificationsConfig;

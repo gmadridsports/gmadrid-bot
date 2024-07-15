@@ -1,7 +1,10 @@
 .PHONY: dev build build-docker-image push-docker-image lint list
+numMessagesToFetch := 0
+whatsappPageUrl := "https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/2.3000.1014840070-alpha.html"
+
 dev:
 	@echo "Starting development server..."
-	@docker-compose run builder "/bin/bash" "-c" "yarn install && yarn dev"
+	@docker-compose run builder "/bin/bash" "-c" "export WHATSAPP_PAGE_URL=\"${whatsappPageUrl}\" yarn install && yarn dev --numMessagesToFetch ${numMessagesToFetch}"
 build:
 	@echo "Building..."
 	@docker-compose run builder "/bin/bash" "-c" "yarn build"
